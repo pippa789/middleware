@@ -1,25 +1,12 @@
-const mongoose = require("mongoose");
- 
-const userSchema = new mongoose.Schema({
-    username:{
-        type: String,
-        required: true,
-        unique: true,
- 
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        //this makes sure it's an email
-        match: /.+\@.+\..+/,
-    },
-    password: {
-        type: String,
-        required:true,
-    }
-});
-   
-const User = mongoose.model("User", userSchema);
- 
-module.exports = User
+const { Router } = require("express");
+const { addUser, listUser, updateUser, deleteuser } = require("./user_controller");
+const { hashPassword, compare } = require ("../middlewear");
+const userRouter = Router();
+
+userRouter.post("/user", hashPassword, addUser);
+userRouter.get("/user", listUser);
+userRouter.put("updateUser");
+userRouter.delete("/user", deleteUser);
+userRouter.get("/user/checkEmail", checkEmail);
+
+module.exports = userRouter;
